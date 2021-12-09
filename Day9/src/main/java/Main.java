@@ -62,39 +62,28 @@ public class Main {
 	}
 
 	private static void addConnectedNode(Direction direction, Node currentNode, int[][] depthMatrix, Node[][] matrix, int x, int y) {
-		switch (direction) {
-			case LEFT -> {
-				if (x > 0) {
-					Node node = matrix[y][x - 1];
-					currentNode.setWestNode(node);
+		if (direction == Direction.UP && y > 0) {
+			Node node = matrix[y - 1][x];
+			currentNode.setNorthNode(node);
+		} else if (direction == Direction.DOWN && y < depthMatrix.length - 1) {
+			matrix[y + 1][x] = new Node(depthMatrix[y + 1][x]);
+			currentNode.setSouthNode(matrix[y + 1][x]);
+		} else if (direction == Direction.LEFT && x > 0) {
+			Node node = matrix[y][x - 1];
+			currentNode.setWestNode(node);
+		} else if (direction == Direction.RIGHT) {
+			if (x < depthMatrix[0].length - 1) {
+				Node node;
+				if (matrix[y][x + 1] == null) {
+					node = new Node(depthMatrix[y][x + 1]);
+					matrix[y][x + 1] = node;
+				} else {
+					node = matrix[y][x + 1];
 				}
-			}
-			case RIGHT -> {
-				if (x < depthMatrix[0].length - 1) {
-					Node node;
-					if (matrix[y][x + 1] == null) {
-						node = new Node(depthMatrix[y][x + 1]);
-						matrix[y][x + 1] = node;
-					} else {
-						node = matrix[y][x + 1];
-					}
-					currentNode.setNextNode(node);
-					currentNode.setEastNode(node);
-				} else if (x != depthMatrix[0].length && y != depthMatrix.length - 1) {
-					currentNode.setNextNode(matrix[y + 1][0]);
-				}
-			}
-			case UP -> {
-				if (y > 0) {
-					Node node = matrix[y - 1][x];
-					currentNode.setNorthNode(node);
-				}
-			}
-			case DOWN -> {
-				if (y < depthMatrix.length - 1) {
-					matrix[y + 1][x] = new Node(depthMatrix[y + 1][x]);
-					currentNode.setSouthNode(matrix[y + 1][x]);
-				}
+				currentNode.setNextNode(node);
+				currentNode.setEastNode(node);
+			} else if (y != depthMatrix.length - 1) {
+				currentNode.setNextNode(matrix[y + 1][0]);
 			}
 		}
 	}
