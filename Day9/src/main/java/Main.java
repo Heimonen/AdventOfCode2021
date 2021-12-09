@@ -43,22 +43,14 @@ public class Main {
 			}
 			i++;
 		}
-		Node firstNode = null;
+		Node firstNode = new Node(depthMatrix[0][0]);
+		matrix[0][0] = firstNode;
+		addConnectedNode(Direction.RIGHT, firstNode, depthMatrix, matrix, 0, 0);
+		addConnectedNode(Direction.DOWN, firstNode, depthMatrix, matrix, 0, 0);
 		for (int y = 0; y < depthMatrix.length; y++) {
 			for (int x = 0; x < depthMatrix[0].length; x++) {
-				if (firstNode == null) {
-					firstNode = new Node(depthMatrix[y][x]);
-					matrix[y][x] = firstNode;
-					addConnectedNode(Direction.RIGHT, firstNode, depthMatrix, matrix, x, y);
-					addConnectedNode(Direction.DOWN, firstNode, depthMatrix, matrix, x, y);
-				} else {
-					Node currentNode;
-					if (matrix[y][x] != null) {
-						currentNode = matrix[y][x];
-					} else {
-						currentNode = new Node(depthMatrix[y][x]);
-						matrix[y][x] = currentNode;
-					}
+				if (x != 0 || y != 0) {
+					Node currentNode = matrix[y][x];
 					addConnectedNode(Direction.LEFT, currentNode, depthMatrix, matrix, x, y);
 					addConnectedNode(Direction.UP, currentNode, depthMatrix, matrix, x, y);
 					addConnectedNode(Direction.RIGHT, currentNode, depthMatrix, matrix, x, y);
