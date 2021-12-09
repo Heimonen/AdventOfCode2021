@@ -102,11 +102,10 @@ public class Main {
 			}
 			node = node.getNextNode();
 		}
-		int totalBasinHeight = -1;
 		if (doCalculateBasins && basinHeights.size() >= 3) {
-			totalBasinHeight = basinHeights.poll() * basinHeights.poll() * basinHeights.poll();
+			return basinHeights.poll() * basinHeights.poll() * basinHeights.poll();
 		}
-		return doCalculateBasins ? totalBasinHeight : totalRiskLevel;
+		return totalRiskLevel;
 	}
 
 	private static int findBasinSize(Node node) {
