@@ -19,37 +19,6 @@ public class Main {
 		System.out.println("Task 2: " + task2);
 	}
 
-	private static long task2() {
-		LinkedList<Long> scores = new LinkedList<>();
-		for (String line: incompleteLines) {
-			Stack<Character> stack = new Stack<>();
-			StringBuilder completionCharacters = new StringBuilder();
-			for (char c: line.toCharArray()) {
-				if (openingCharacters.contains(c)) {
-					stack.add(c);
-				} else if (getMatchingClosingChar(stack.peek()) == c) {
-					stack.pop();
-				}
-			}
-			long score = 0L;
-			while (!stack.isEmpty()) {
-				char completionCharacter = getMatchingClosingChar(stack.pop());
-				completionCharacters.append(completionCharacter);
-				score = score * 5 + switch (completionCharacter) {
-					case ')' -> 1L;
-					case ']' -> 2L;
-					case '}' -> 3L;
-					case '>' -> 4L;
-					default -> -1L;
-				};
-			}
-			scores.add(score);
-			System.out.println("Complete by adding " + completionCharacters + ". Total points: " + score);
-		}
-		Collections.sort(scores);
-		return scores.get((scores.size() - 1) / 2);
-	}
-
 	private static int task1(BufferedReader reader) throws IOException {
 		String line;
 		int score = 0;
@@ -61,10 +30,10 @@ public class Main {
 
 	private static int parseLine(String line) {
 		Stack<Character> stack = new Stack<>();
-		for (char c: line.toCharArray()) {
+		for (char c : line.toCharArray()) {
 			if (openingCharacters.contains(c)) {
 				stack.add(c);
-			} else  if (isCorruptCharacter(stack.pop(), c)){
+			} else if (isCorruptCharacter(stack.pop(), c)) {
 				System.out.println("Syntax error on " + c);
 				return switch (c) {
 					case ')' -> 3;
@@ -91,6 +60,37 @@ public class Main {
 			case '<' -> '>';
 			default -> '0';
 		};
+	}
+
+	private static long task2() {
+		LinkedList<Long> scores = new LinkedList<>();
+		for (String line : incompleteLines) {
+			Stack<Character> stack = new Stack<>();
+			StringBuilder completionCharacters = new StringBuilder();
+			for (char c : line.toCharArray()) {
+				if (openingCharacters.contains(c)) {
+					stack.add(c);
+				} else if (getMatchingClosingChar(stack.peek()) == c) {
+					stack.pop();
+				}
+			}
+			long score = 0L;
+			while (!stack.isEmpty()) {
+				char completionCharacter = getMatchingClosingChar(stack.pop());
+				completionCharacters.append(completionCharacter);
+				score = score * 5 + switch (completionCharacter) {
+					case ')' -> 1L;
+					case ']' -> 2L;
+					case '}' -> 3L;
+					case '>' -> 4L;
+					default -> -1L;
+				};
+			}
+			scores.add(score);
+			System.out.println("Complete by adding " + completionCharacters + ". Total points: " + score);
+		}
+		Collections.sort(scores);
+		return scores.get((scores.size() - 1) / 2);
 	}
 
 	private static BufferedReader getBufferedReader() throws IOException {
